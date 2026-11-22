@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calc Pro</title>
+<style>
+body{background:#0a0a0a;color:#a6ff8f;font-family:sans-serif;display:flex;justify-content:center;margin:0}
+.app{width:360px;padding:15px}
+h2{color:#8aff6a}
+#screen{background:#111;border-radius:20px;padding:15px;text-align:right;min-height:100px}
+#expr{font-size:18px;color:#ccc;min-height:25px;word-break:break-all}
+#result{font-size:48px;font-weight:bold}
+.row{display:flex;gap:8px;margin-top:8px}
+button{flex:1;padding:16px;font-size:20px;border-radius:15px;border:1px solid #2bff6a;background:#1a1a1a;color:#a6ff8f}
+button.num{color:#fff}
+.eq{background:#8aff6a;color:#000;font-weight:bold}
+.sci{font-size:14px;padding:10px}
+</style>
+</head>
+<body>
+<div class="app">
+<h2>Calc Pro</h2>
+<div id="screen"><div id="expr"></div><div id="result">0</div></div>
+<div class="row">
+<button class="sci" onclick="add('sin(')">sin</button>
+<button class="sci" onclick="add('cos(')">cos</button>
+<button class="sci" onclick="add('tan(')">tan</button>
+<button class="sci" onclick="add('Math.log(')">ln</button>
+<button class="sci" onclick="add('Math.sqrt(')">√</button>
+<button class="sci" onclick="add('**')">^</button>
+</div>
+<div class="row">
+<button onclick="clr()">C</button>
+<button onclick="add('(')">(</button>
+<button onclick="add(')')">)</button>
+<button onclick="add('/')">÷</button>
+</div>
+<div class="row">
+<button class="num" onclick="add('7')">7</button>
+<button class="num" onclick="add('8')">8</button>
+<button class="num" onclick="add('9')">9</button>
+<button onclick="add('*')">×</button>
+</div>
+<div class="row">
+<button class="num" onclick="add('4')">4</button>
+<button class="num" onclick="add('5')">5</button>
+<button class="num" onclick="add('6')">6</button>
+<button onclick="add('-')">-</button>
+</div>
+<div class="row">
+<button class="num" onclick="add('1')">1</button>
+<button class="num" onclick="add('2')">2</button>
+<button class="num" onclick="add('3')">3</button>
+<button onclick="add('+')">+</button>
+</div>
+<div class="row">
+<button class="num" onclick="add('0')">0</button>
+<button class="num" onclick="add('.')">.</button>
+<button onclick="add('Math.PI')">π</button>
+<button class="eq" onclick="calc()">=</button>
+</div>
+</div>
+<script>
+let e='';
+function add(v){e+=v;document.getElementById('expr').innerText=e;}
+function clr(){e='';document.getElementById('expr').innerText='';document.getElementById('result').innerText='0';}
+function calc(){
+try{
+let x=e.replace(/sin\(/g,'Math.sin(').replace(/cos\(/g,'Math.cos(').replace(/tan\(/g,'Math.tan(');
+document.getElementById('result').innerText=eval(x);
+}catch{ document.getElementById('result').innerText='Error'; }
+}
+</script>
+</body>
+  </html>
