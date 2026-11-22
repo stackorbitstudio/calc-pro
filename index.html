@@ -6,10 +6,13 @@
 <style>
 body{background:#0a0a0a;color:#a6ff8f;font-family:sans-serif;display:flex;justify-content:center;margin:0}
 .app{width:360px;padding:15px}
-h2{color:#8aff6a}
+.top{display:flex;justify-content:space-between;align-items:center}
+h2{color:#8aff6a;margin:0}
+.top button{flex:none;padding:8px 14px;font-size:13px}
 #screen{background:#111;border-radius:20px;padding:15px;text-align:right;min-height:100px}
 #expr{font-size:18px;color:#ccc;min-height:25px;word-break:break-all}
 #result{font-size:48px;font-weight:bold}
+#history{background:#111;border-radius:15px;padding:10px;margin-top:10px;display:none;max-height:120px;overflow:auto;font-size:14px;color:#ccc}
 .row{display:flex;gap:8px;margin-top:8px}
 button{flex:1;padding:16px;font-size:20px;border-radius:15px;border:1px solid #2bff6a;background:#1a1a1a;color:#a6ff8f}
 button.num{color:#fff}
@@ -19,9 +22,10 @@ button.num{color:#fff}
 </head>
 <body>
 <div class="app">
-<h2>Calc Pro</h2>
+<div class="top"><h2>Calc Pro</h2><button onclick="toggleMode()" id="modeBtn">Scientific</button><button onclick="showHistory()">History</button></div>
 <div id="screen"><div id="expr"></div><div id="result">0</div></div>
-<div class="row">
+<div id="history"></div>
+<div class="row" id="sciRow">
 <button class="sci" onclick="add('sin(')">sin</button>
 <button class="sci" onclick="add('cos(')">cos</button>
 <button class="sci" onclick="add('tan(')">tan</button>
@@ -31,6 +35,7 @@ button.num{color:#fff}
 </div>
 <div class="row">
 <button onclick="clr()">C</button>
+<button onclick="back()">⌫</button>
 <button onclick="add('(')">(</button>
 <button onclick="add(')')">)</button>
 <button onclick="add('/')">÷</button>
@@ -61,13 +66,16 @@ button.num{color:#fff}
 </div>
 </div>
 <script>
-let e='';
+let e='', hist=[], isSci=true;
 function add(v){e+=v;document.getElementById('expr').innerText=e;}
 function clr(){e='';document.getElementById('expr').innerText='';document.getElementById('result').innerText='0';}
+function back(){e=e.slice(0,-1);document.getElementById('expr').innerText=e;}
+function toggleMode(){isSci=!isSci;document.getElementById('sciRow').style.display=isSci?'flex':'none';document.getElementById('modeBtn').innerText=isSci?'Scientific':'Normal';}
+function showHistory(){let h=document.getElementById('history');h.style.display=h.style.display=='block'?'none':'block';h.innerHTML=hist.length?hist.join('<br>'):'No History Yet';}
 function calc(){
 try{
 let x=e.replace(/sin\(/g,'Math.sin(').replace(/cos\(/g,'Math.cos(').replace(/tan\(/g,'Math.tan(');
-document.getElementById('result').innerText=eval(x);
+let r=eval(x);document.getElementById('result').innerText=r;hist.unshift(e+' = '+r);if(hist.length>20)hist.pop();
 }catch{ document.getElementById('result').innerText='Error'; }
 }
 </script>
